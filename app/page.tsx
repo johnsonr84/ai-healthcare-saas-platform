@@ -4,8 +4,17 @@ import Link from "next/link";
 import { PatientForm } from "@/components/forms/PatientForm";
 import { PasskeyModal } from "@/components/PasskeyModal";
 
-const Home = ({ searchParams }: SearchParamProps) => {
-  const isAdmin = searchParams?.admin === "true";
+const Home = async ({ searchParams }: SearchParamProps) => {
+  const sp = await searchParams;
+  const adminParam = sp?.admin;
+  const admin =
+    typeof adminParam === "string"
+      ? adminParam
+      : Array.isArray(adminParam)
+        ? adminParam[0]
+        : undefined;
+
+  const isAdmin = admin === "true";
 
   return (
     <div className="flex h-screen max-h-screen">
@@ -25,7 +34,7 @@ const Home = ({ searchParams }: SearchParamProps) => {
 
           <div className="text-14-regular mt-20 flex justify-between">
             <p className="justify-items-end text-dark-600 xl:text-left">
-              © 2024 CarePluse
+              © {new Date().getFullYear()} Salus Health Management System
             </p>
             <Link href="/?admin=true" className="text-green-500">
               Admin

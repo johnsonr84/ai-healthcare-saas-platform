@@ -8,14 +8,24 @@ import { formatDateTime } from "@/lib/utils";
 
 const RequestSuccess = async ({
   searchParams,
-  params: { userId },
+  params,
 }: SearchParamProps) => {
-  const appointmentId = (searchParams?.appointmentId as string) || "";
+  const { userId } = await params;
+
+  const sp = await searchParams;
+  const appointmentIdParam = sp?.appointmentId;
+  const appointmentId =
+    typeof appointmentIdParam === "string"
+      ? appointmentIdParam
+      : Array.isArray(appointmentIdParam)
+        ? appointmentIdParam[0] ?? ""
+        : "";
+
   const appointment = await getAppointment(appointmentId);
 
-  const doctor = Doctors.find(
-    (doctor) => doctor.name === appointment.primaryPhysician
-  );
+  const doctor =
+    Doctors.find((doctor) => doctor.name === appointment.primaryPhysician) ??
+    Doctors[0];
 
   return (
     <div className=" flex h-screen max-h-screen px-[5%]">
@@ -48,13 +58,13 @@ const RequestSuccess = async ({
           <p>Requested appointment details: </p>
           <div className="flex items-center gap-3">
             <Image
-              src={doctor?.image!}
+              src={doctor.image}
               alt="doctor"
               width={100}
               height={100}
               className="size-6"
             />
-            <p className="whitespace-nowrap">Dr. {doctor?.name}</p>
+            <p className="whitespace-nowrap">Dr. {doctor.name}</p>
           </div>
           <div className="flex gap-2">
             <Image
