@@ -13,7 +13,7 @@ import {
   createAppointment,
   updateAppointment,
 } from "@/lib/actions/appointment.actions";
-import { getAppointmentSchema } from "@/lib/validation";
+import { AppointmentFormValues, getAppointmentSchema } from "@/lib/validation";
 import { Appointment } from "@/types/appwrite.types";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -40,8 +40,8 @@ export const AppointmentForm = ({
 
   const AppointmentFormValidation = getAppointmentSchema(type);
 
-  const form = useForm<z.infer<typeof AppointmentFormValidation>>({
-    resolver: zodResolver(AppointmentFormValidation),
+  const form = useForm<AppointmentFormValues>({
+    resolver: zodResolver(AppointmentFormValidation as any) as any,
     defaultValues: {
       primaryPhysician: appointment ? appointment?.primaryPhysician : "",
       schedule: appointment
@@ -53,9 +53,7 @@ export const AppointmentForm = ({
     },
   });
 
-  const onSubmit = async (
-    values: z.infer<typeof AppointmentFormValidation>
-  ) => {
+  const onSubmit = async (values: AppointmentFormValues) => {
     setIsLoading(true);
 
     let status;
@@ -94,6 +92,7 @@ export const AppointmentForm = ({
         const appointmentToUpdate = {
           userId,
           appointmentId: appointment?.$id!,
+          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           appointment: {
             primaryPhysician: values.primaryPhysician,
             schedule: new Date(values.schedule),
