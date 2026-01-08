@@ -106,7 +106,14 @@ export const CancelAppointmentSchema = z.object({
     .max(500, "Reason must be at most 500 characters"),
 });
 
-export function getAppointmentSchema(type: string) {
+export type AppointmentFormType = "create" | "schedule" | "cancel";
+
+export type AppointmentFormValues =
+  | z.infer<typeof CreateAppointmentSchema>
+  | z.infer<typeof ScheduleAppointmentSchema>
+  | z.infer<typeof CancelAppointmentSchema>;
+
+export function getAppointmentSchema(type: AppointmentFormType): z.ZodType<AppointmentFormValues> {
   switch (type) {
     case "create":
       return CreateAppointmentSchema;
