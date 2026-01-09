@@ -18,11 +18,23 @@ export const createAppointment = async (
   appointment: CreateAppointmentParams
 ) => {
   try {
+    const appointmentId = ID.unique();
+    const appointmentData: Record<string, unknown> = {
+      appointmentId,
+      ...appointment,
+    };
+
+    // Some Appwrite schemas require a separate `patientId` attribute.
+    // Our form sends `patient` as the patient document id, so mirror it.
+    if (typeof appointmentData.patient === "string") {
+      appointmentData.patientId = appointmentData.patient;
+    }
+
     const newAppointment = await databases.createDocument(
       DATABASE_ID!,
       APPOINTMENT_COLLECTION_ID!,
-      ID.unique(),
-      appointment
+      appointmentId,
+      appointmentData
     );
 
     revalidatePath("/admin");

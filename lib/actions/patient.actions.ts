@@ -6,14 +6,24 @@ import { InputFile } from "node-appwrite/file";
 import {
   BUCKET_ID,
   DATABASE_ID,
-  ENDPOINT,
   PATIENT_COLLECTION_ID,
-  PROJECT_ID,
   databases,
   storage,
   users,
 } from "../appwrite.config";
 import { parseStringify } from "../utils";
+
+const getErrorCode = (error: unknown): number | undefined => {
+  if (typeof error !== "object" || error === null) return undefined;
+  const maybe = error as Record<string, unknown>;
+  return typeof maybe.code === "number" ? maybe.code : undefined;
+};
+
+const getErrorMessage = (error: unknown): string | undefined => {
+  if (typeof error !== "object" || error === null) return undefined;
+  const maybe = error as Record<string, unknown>;
+  return typeof maybe.message === "string" ? maybe.message : undefined;
+};
 
 // CREATE APPWRITE USER
 export const createUser = async (user: CreateUserParams) => {
@@ -28,9 +38,9 @@ export const createUser = async (user: CreateUserParams) => {
     );
 
     return parseStringify(newuser);
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Check existing user
-    if (error && error?.code === 409) {
+    if (getErrorCode(error) === 409) {
       const existingUser = await users.list([
         Query.equal("email", [user.email]),
       ]);
@@ -58,6 +68,7 @@ export const getUser = async (userId: string) => {
 // REGISTER PATIENT
 export const registerPatient = async ({
   identificationDocument,
+  userId,
   ...patient
 }: RegisterUserParams) => {
   try {
@@ -75,17 +86,30 @@ export const registerPatient = async ({
     }
 
     // Create new patient document -> https://appwrite.io/docs/references/cloud/server-nodejs/databases#createDocument
+    const patientData: Record<string, unknown> = {
+      // Appwrite collection schema expects `userID` (capital D) in some setups.
+      userID: userId,
+      ...patient,
+    };
+
+    // Appwrite enums are often configured as lowercase (e.g. "male", "female", "other").
+    // Normalize the submitted value without forcing the UI to change.
+    if (typeof patientData.gender === "string") {
+      patientData.gender = patientData.gender.toLowerCase();
+    }
+
+    // Some Appwrite schemas constrain `identificationDocumentUrl` to short strings (e.g. <= 100 chars).
+    // Store the file id (short + stable) and derive the full view URL when needed.
+    if (file?.$id) {
+      patientData.identificationDocumentId = file.$id;
+      patientData.identificationDocumentUrl = file.$id;
+    }
+
     const newPatient = await databases.createDocument(
       DATABASE_ID!,
       PATIENT_COLLECTION_ID!,
-      ID.unique(),
-      {
-        identificationDocumentId: file?.$id ? file.$id : null,
-        identificationDocumentUrl: file?.$id
-          ? `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/view??project=${PROJECT_ID}`
-          : null,
-        ...patient,
-      }
+      userId,
+      patientData
     );
 
     return parseStringify(newPatient);
@@ -97,17 +121,47 @@ export const registerPatient = async ({
 // GET PATIENT
 export const getPatient = async (userId: string) => {
   try {
-    const patients = await databases.listDocuments(
+    // Prefer fetching by document ID (we create patient docs with id=userId).
+    const patient = await databases.getDocument(
       DATABASE_ID!,
       PATIENT_COLLECTION_ID!,
-      [Query.equal("userId", [userId])]
+      userId
     );
 
-    return parseStringify(patients.documents[0]);
-  } catch (error) {
+    return parseStringify(patient);
+  } catch (error: unknown) {
+    // Backward compatibility: if the project previously used random document IDs,
+    // try querying by a `userId` attribute (if present in the collection schema).
+    if (getErrorCode(error) === 404) {
+      try {
+        const patients = await databases.listDocuments(
+          DATABASE_ID!,
+          PATIENT_COLLECTION_ID!,
+          [Query.equal("userID", [userId])]
+        );
+
+        const doc = patients.documents[0];
+        return doc ? parseStringify(doc) : null;
+      } catch (queryError: unknown) {
+        const msg = getErrorMessage(queryError) ?? "";
+        if (
+          getErrorCode(queryError) === 400 &&
+          (msg.includes("Attribute not found in schema: userID") ||
+            msg.includes("Attribute not found in schema: userId"))
+        ) {
+          return null;
+        }
+        console.error(
+          "An error occurred while retrieving the patient details:",
+          queryError
+        );
+        return null;
+      }
+    }
     console.error(
       "An error occurred while retrieving the patient details:",
       error
     );
+    return null;
   }
 };
