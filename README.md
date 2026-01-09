@@ -2,6 +2,18 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Environment variables
+
+This app uses Appwrite. Copy `env.example` to `.env.local` and fill in the values:
+
+```bash
+cp env.example .env.local
+```
+
+Important notes:
+- `NEXT_PUBLIC_ENDPOINT` must be a valid Appwrite endpoint URL (e.g. `https://cloud.appwrite.io/v1`).
+- If you use a region endpoint, make sure it’s spelled correctly (e.g. **sanfrancisco**, not **sanfransico**), otherwise you’ll get DNS errors like `getaddrinfo ENOTFOUND`.
+
 First, run the development server:
 
 ```bash
