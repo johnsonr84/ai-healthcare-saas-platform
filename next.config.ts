@@ -1,6 +1,15 @@
 import { withSentryConfig } from "@sentry/nextjs";
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  experimental: {
+    serverActions: {
+      // Needed because registration uploads an identification document via a Server Action.
+      // Default is 1mb which can easily be exceeded by images/PDFs.
+      bodySizeLimit: "10mb",
+    },
+  },
+};
 
 export default withSentryConfig(nextConfig, {
   // For all available options, see:
