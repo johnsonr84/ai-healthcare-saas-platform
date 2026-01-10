@@ -22,7 +22,11 @@ export const columns: ColumnDef<Appointment>[] = [
     header: "Patient",
     cell: ({ row }) => {
       const appointment = row.original;
-      return <p className="text-14-medium ">{appointment.patient.name}</p>;
+      const patientName =
+        typeof appointment.patient === "string"
+          ? ""
+          : appointment.patient?.name ?? "";
+      return <p className="text-14-medium ">{patientName || "—"}</p>;
     },
   },
   {
@@ -78,11 +82,15 @@ export const columns: ColumnDef<Appointment>[] = [
     header: () => <div className="pl-4">Actions</div>,
     cell: ({ row }) => {
       const appointment = row.original;
+      const patientId =
+        typeof appointment.patient === "string"
+          ? appointment.patient
+          : appointment.patient?.$id ?? "";
 
       return (
         <div className="flex gap-1">
           <AppointmentModal
-            patientId={appointment.patient.$id}
+            patientId={patientId}
             userId={appointment.userId}
             appointment={appointment}
             type="schedule"
@@ -90,7 +98,7 @@ export const columns: ColumnDef<Appointment>[] = [
             description="Please confirm the following details to schedule."
           />
           <AppointmentModal
-            patientId={appointment.patient.$id}
+            patientId={patientId}
             userId={appointment.userId}
             appointment={appointment}
             type="cancel"
