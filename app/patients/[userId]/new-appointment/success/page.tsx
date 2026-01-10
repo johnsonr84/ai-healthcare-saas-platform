@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Doctors } from "@/constants";
@@ -21,7 +22,15 @@ const RequestSuccess = async ({
         ? appointmentIdParam[0] ?? ""
         : "";
 
+  if (!appointmentId) {
+    redirect(`/patients/${userId}/new-appointment`);
+  }
+
   const appointment = await getAppointment(appointmentId);
+
+  if (!appointment) {
+    redirect(`/patients/${userId}/new-appointment`);
+  }
 
   const doctor =
     Doctors.find((doctor) => doctor.name === appointment.primaryPhysician) ??

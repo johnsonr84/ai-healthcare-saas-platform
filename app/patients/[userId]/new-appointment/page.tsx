@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 import { AppointmentForm } from "@/components/forms/AppointmentForm";
 import { getPatient } from "@/lib/actions/patient.actions";
@@ -6,6 +7,10 @@ import { getPatient } from "@/lib/actions/patient.actions";
 const Appointment = async ({ params }: SearchParamProps) => {
   const { userId } = await params;
   const patient = await getPatient(userId);
+
+  if (!patient) {
+    redirect(`/patients/${userId}/register`);
+  }
 
   return (
     <div className="flex h-screen max-h-screen">
@@ -20,7 +25,7 @@ const Appointment = async ({ params }: SearchParamProps) => {
           />
 
           <AppointmentForm
-            patientId={patient?.$id}
+            patientId={patient.$id}
             userId={userId}
             type="create"
           />
