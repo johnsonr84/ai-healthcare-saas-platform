@@ -45,9 +45,9 @@ export const AppointmentModal = ({
       <DialogContent className="shad-dialog sm:max-w-md">
         <DialogHeader className="mb-4 space-y-3">
           <DialogTitle className="capitalize">{type} Appointment</DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-white">
             Please fill in the following details to {type} appointment
-          </DialogDescription>
+          </DialogDescription >
         </DialogHeader>
 
         <AppointmentForm

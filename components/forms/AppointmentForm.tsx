@@ -62,7 +62,7 @@ export const AppointmentForm = ({
         status = "scheduled";
         break;
       case "cancel":
-        status = "cancelled";
+        status = "canceled";
         break;
       default:
         status = "pending";
@@ -89,16 +89,22 @@ export const AppointmentForm = ({
           );
         }
       } else {
+        const dataToUpdate: Record<string, unknown> = {
+          status: status as Status,
+        };
+
+        if (type === "cancel") {
+          dataToUpdate.cancellationReason = values.cancellationReason;
+        } else {
+          dataToUpdate.primaryPhysician = values.primaryPhysician;
+          dataToUpdate.schedule = new Date(values.schedule);
+        }
+
         const appointmentToUpdate = {
           userId,
           appointmentId: appointment?.$id!,
           timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          appointment: {
-            primaryPhysician: values.primaryPhysician,
-            schedule: new Date(values.schedule),
-            status: status as Status,
-            cancellationReason: values.cancellationReason,
-          },
+          appointment: dataToUpdate as any,
           type,
         };
 
@@ -107,6 +113,7 @@ export const AppointmentForm = ({
         if (updatedAppointment) {
           setOpen && setOpen(false);
           form.reset();
+          router.refresh();
         }
       }
     } catch (error) {
@@ -133,7 +140,7 @@ export const AppointmentForm = ({
         {type === "create" && (
           <section className="mb-12 space-y-4">
             <h1 className="header">New Appointment</h1>
-            <p className="text-dark-700">
+            <p className="text-dark-800">
               Request a new appointment in 10 seconds.
             </p>
           </section>

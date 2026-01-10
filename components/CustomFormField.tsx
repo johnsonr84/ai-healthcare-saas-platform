@@ -46,14 +46,14 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
   switch (props.fieldType) {
     case FormFieldType.INPUT:
       return (
-        <div className="flex rounded-md border border-dark-500 bg-dark-400">
+        <div className="flex rounded-md border border-dark-500 bg-slate-100">
           {props.iconSrc && (
             <Image
               src={props.iconSrc}
               height={24}
               width={24}
               alt={props.iconAlt || "icon"}
-              className="ml-2"
+              className="ml-2 filter brightness-50"
             />
           )}
           <FormControl>
@@ -107,13 +107,13 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
       );
     case FormFieldType.DATE_PICKER:
       return (
-        <div className="flex rounded-md border border-dark-500 bg-dark-400">
+        <div className="flex rounded-md border border-dark-500 bg-slate-100">
           <Image
             src="/assets/icons/calendar.svg"
             height={24}
             width={24}
             alt="user"
-            className="ml-2"
+            className="ml-2 filter brightness-50"
           />
           <FormControl>
             <ReactDatePicker
