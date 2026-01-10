@@ -34,7 +34,7 @@ const Home = async ({ searchParams }: SearchParamProps) => {
 
           <div className="text-14-regular mt-20 flex justify-between">
             <p className="justify-items-end text-dark-600 xl:text-left">
-              © {new Date().getFullYear()} Salus Health Management System
+              © {new Date().getFullYear()} PatientFlow
             </p>
             <Link href="/?admin=true" className="text-green-500">
               Admin

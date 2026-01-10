@@ -132,7 +132,7 @@
 
   /* ===== ADMIN */
   .admin-header {
-    @apply sticky top-3 z-20 mx-3 flex items-center justify-between rounded-2xl bg-dark-200 px-[5%] py-5 shadow-lg xl:px-12;
+    @apply sticky top-3 z-20 mx-3 flex items-center justify-between rounded-2xl bg-slate-300 px-[5%] py-5 shadow-lg xl:px-12;
   }
 
   .admin-main {
@@ -140,7 +140,7 @@
   }
 
   .admin-stat {
-    @apply flex w-full flex-col justify-between gap-5 sm:flex-row xl:gap-10;
+    @apply flex w-full flex-col justify-between gap-5 sm:flex-row xl:gap-10 text-white;
   }
 
   /* ==== FORM */
@@ -149,7 +149,7 @@
   }
 
   .checkbox-label {
-    @apply cursor-pointer text-sm font-medium text-dark-700 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 md:leading-none;
+    @apply cursor-pointer text-sm font-medium text-dark-700 peer-disabled:cursor-not-allowed peer-disabled:opacity-50 md:leading-none;
   }
 
   /* ==== File Upload */
@@ -163,7 +163,7 @@
 
   /* ==== Stat Card */
   .stat-card {
-    @apply flex flex-1 flex-col gap-6 rounded-2xl bg-cover p-6 shadow-lg;
+    @apply flex flex-1 flex-col gap-6 rounded-2xl bg-cover bg-dark-200 p-6 shadow-lg;
   }
 
   /* ==== Status Badge */
@@ -194,19 +194,19 @@
   }
 
   .shad-input-label {
-    @apply text-14-medium text-dark-700 !important;
+    @apply text-14-medium text-slate-400 !important;
   }
 
   .shad-input {
-    @apply bg-dark-400 placeholder:text-dark-600 border-dark-500 h-11 focus-visible:ring-0 focus-visible:ring-offset-0 !important;
+    @apply bg-slate-100 placeholder:text-dark-600 border-dark-400 h-11 focus-visible:ring-0 focus-visible:ring-offset-0 !important;
   }
 
   .shad-input-icon {
-    @apply bg-dark-400 placeholder:text-dark-600 border-dark-500 h-11 focus-visible:ring-0 focus-visible:ring-offset-0 !important;
+    @apply bg-slate-100 placeholder:text-dark-600 border-dark-500 h-11 focus-visible:ring-0 focus-visible:ring-offset-0 !important;
   }
 
   .shad-textArea {
-    @apply bg-dark-400 placeholder:text-dark-600 border-dark-500 focus-visible:ring-0 focus-visible:ring-offset-0 !important;
+    @apply bg-slate-100 placeholder:text-dark-600 border-dark-500 focus-visible:ring-0 focus-visible:ring-offset-0 !important;
   }
 
   .shad-combobox-item {
@@ -218,11 +218,11 @@
   }
 
   .shad-select-trigger {
-    @apply bg-dark-400  placeholder:text-dark-600 border-dark-500 h-11 focus:ring-0 focus:ring-offset-0 !important;
+    @apply bg-slate-100  placeholder:text-dark-600 border-dark-500 h-11 focus:ring-0 focus:ring-offset-0 !important;
   }
 
   .shad-select-content {
-    @apply bg-dark-400 border-dark-500 !important;
+    @apply bg-slate-100 border-dark-500 !important;
   }
 
   .shad-dialog {
@@ -242,11 +242,11 @@
   }
 
   .shad-table-row-header {
-    @apply border-b border-dark-400 text-light-200 hover:bg-transparent !important;
+    @apply border-b border-dark-400 text-dark-200 hover:bg-transparent !important;
   }
 
   .shad-table-row {
-    @apply border-b border-dark-400 text-light-200 !important;
+    @apply border-b border-dark-400 text-dark-200 !important;
   }
 
   .shad-otp {
@@ -267,7 +267,7 @@
 
   /* =====  REACT PHONE NUMBER INPUT OVERRIDES */
   .input-phone {
-    @apply mt-2 h-11 rounded-md px-3 text-sm border bg-dark-400 placeholder:text-dark-600 border-dark-500 !important;
+    @apply mt-2 h-11 rounded-md px-3 text-sm border bg-slate-100 placeholder:text-dark-600 border-dark-500 !important;
   }
 
   /* =====  REACT DATE PICKER OVERRIDES */
@@ -289,7 +289,7 @@
 .react-datepicker__day-name,
 .react-datepicker__day,
 .react-datepicker-time__header {
-  background-color: #1a1d21 !important;
+  background-color: #555658 !important;
   border-color: #363a3d !important;
   color: #abb8c4 !important;
 }
@@ -311,7 +311,7 @@
 }
 
 .react-datepicker__input-container input {
-  background-color: #1a1d21 !important;
+  background-color: #f1f5f9 !important;
   width: 100%;
   outline: none;
 }
@@ -339,7 +339,7 @@
 .PhoneInputInput {
   outline: none;
   margin-left: 4px;
-  background: #1a1d21;
+  background: #f1f5f9;
   font-size: 14px;
   font-weight: 500;
 }

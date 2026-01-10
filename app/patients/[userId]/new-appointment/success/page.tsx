@@ -81,6 +81,7 @@ const RequestSuccess = async ({
               height={24}
               width={24}
               alt="calendar"
+              className="filter brightness-50"
             />
             <p> {formatDateTime(appointment.schedule).dateTime}</p>
           </div>
@@ -92,7 +93,7 @@ const RequestSuccess = async ({
           </Link>
         </Button>
 
-        <p className="copyright">© 2024 CarePluse</p>
+        <p className="copyright">© 2026 PatientFlow</p>
       </div>
     </div>
   );
