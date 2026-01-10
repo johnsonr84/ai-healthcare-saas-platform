@@ -3,12 +3,14 @@
 import { ID, Query } from "node-appwrite";
 import { InputFile } from "node-appwrite/file";
 
+import { Patient } from "@/types/appwrite.types";
+
 import {
   BUCKET_ID,
   DATABASE_ID,
   PATIENT_COLLECTION_ID,
-  databases,
   storage,
+  tablesDB,
   users,
 } from "../appwrite.config";
 import { parseStringify } from "../utils";
@@ -56,12 +58,13 @@ export const getUser = async (userId: string) => {
   try {
     const user = await users.get(userId);
 
-    return parseStringify(user);
+    return parseStringify(user) as User;
   } catch (error) {
     console.error(
       "An error occurred while retrieving the user details:",
       error
     );
+    return null;
   }
 };
 
@@ -105,12 +108,12 @@ export const registerPatient = async ({
       patientData.identificationDocumentUrl = file.$id;
     }
 
-    const newPatient = await databases.createDocument(
-      DATABASE_ID!,
-      PATIENT_COLLECTION_ID!,
-      userId,
-      patientData
-    );
+    const newPatient = await tablesDB.createRow({
+      databaseId: DATABASE_ID!,
+      tableId: PATIENT_COLLECTION_ID!,
+      rowId: userId,
+      data: patientData,
+    });
 
     return parseStringify(newPatient);
   } catch (error) {
@@ -122,11 +125,11 @@ export const registerPatient = async ({
 export const getPatient = async (userId: string) => {
   try {
     // Prefer fetching by document ID (we create patient docs with id=userId).
-    const patient = await databases.getDocument(
-      DATABASE_ID!,
-      PATIENT_COLLECTION_ID!,
-      userId
-    );
+    const patient = await tablesDB.getRow<Patient>({
+      databaseId: DATABASE_ID!,
+      tableId: PATIENT_COLLECTION_ID!,
+      rowId: userId,
+    });
 
     return parseStringify(patient);
   } catch (error: unknown) {
@@ -134,13 +137,13 @@ export const getPatient = async (userId: string) => {
     // try querying by a `userId` attribute (if present in the collection schema).
     if (getErrorCode(error) === 404) {
       try {
-        const patients = await databases.listDocuments(
-          DATABASE_ID!,
-          PATIENT_COLLECTION_ID!,
-          [Query.equal("userID", [userId])]
-        );
+        const patients = await tablesDB.listRows<Patient>({
+          databaseId: DATABASE_ID!,
+          tableId: PATIENT_COLLECTION_ID!,
+          queries: [Query.equal("userID", [userId])],
+        });
 
-        const doc = patients.documents[0];
+        const doc = patients.rows[0];
         return doc ? parseStringify(doc) : null;
       } catch (queryError: unknown) {
         const msg = getErrorMessage(queryError) ?? "";

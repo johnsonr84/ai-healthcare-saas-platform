@@ -15,7 +15,7 @@ function assertEnv(name: string, value: string | undefined): string {
   if (!value) {
     throw new Error(
       `[Appwrite] Missing environment variable: ${name}. ` +
-        `Create a .env.local with ${name} and restart the dev server.`
+      `Create a .env.local with ${name} and restart the dev server.`
     );
   }
   return value;
@@ -25,8 +25,8 @@ function validateEndpoint(endpoint: string): string {
   if (endpoint.includes("sanfransico.cloud.appwrite.io")) {
     throw new Error(
       `[Appwrite] Invalid ENDPOINT hostname: "sanfransico.cloud.appwrite.io" (typo). ` +
-        `Did you mean "sanfrancisco.cloud.appwrite.io"? ` +
-        `Alternatively use "https://cloud.appwrite.io/v1".`
+      `Did you mean "sanfrancisco.cloud.appwrite.io"? ` +
+      `Alternatively use "https://cloud.appwrite.io/v1".`
     );
   }
 
@@ -39,8 +39,8 @@ function validateEndpoint(endpoint: string): string {
   } catch {
     throw new Error(
       `[Appwrite] Invalid NEXT_PUBLIC_ENDPOINT value: "${endpoint}". ` +
-        `Expected a URL like "https://cloud.appwrite.io/v1" or ` +
-        `"https://sanfrancisco.cloud.appwrite.io/v1".`
+      `Expected a URL like "https://cloud.appwrite.io/v1" or ` +
+      `"https://sanfrancisco.cloud.appwrite.io/v1".`
     );
   }
 }
@@ -57,6 +57,7 @@ client
   .setKey(assertEnv("API_KEY", API_KEY));
 
 export const databases = new sdk.Databases(client);
+export const tablesDB = new sdk.TablesDB(client);
 export const users = new sdk.Users(client);
 export const messaging = new sdk.Messaging(client);
 export const storage = new sdk.Storage(client);
