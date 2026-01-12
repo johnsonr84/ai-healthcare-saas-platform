@@ -1,48 +1,185 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏥 PatientFlow — Healthcare Patient Management System
 
-## Getting Started
+PatientFlow is a full-stack healthcare patient management system that allows patients to register, book, and manage appointments, while administrators can schedule, confirm, and cancel visits. It also includes SMS notifications and secure file uploads, all built with a modern Next.js stack.
 
-### Environment variables
+---
 
-This app uses Appwrite. Copy `env.example` to `.env.local` and fill in the values:
+## 🚀 Tech Stack
 
-```bash
-cp env.example .env.local
+- ⚛️ **Next.js (App Router)**
+- 🧠 **TypeScript**
+- 🎨 **Tailwind CSS**
+- 🧩 **shadcn/ui**
+- 🗄️ **Appwrite (Database + Storage + Auth)**
+- 📩 **Twilio (SMS Notifications)**
+- 🛡️ **Sentry (Monitoring & Performance Tracking)**
+
+---
+
+## 🔋 Features
+
+👉 **Patient Registration** — Users can create personal patient profiles  
+👉 **Book Appointments** — Schedule visits with available doctors  
+👉 **Admin Dashboard** — View, manage, and control all appointments  
+👉 **Confirm & Schedule Appointments** — Admins finalize visit times  
+👉 **Cancel Appointments** — Admins can cancel when necessary  
+👉 **SMS Notifications** — Patients receive confirmation texts via Twilio  
+👉 **File Uploads** — Secure ID and document uploads using Appwrite Storage  
+👉 **Fully Responsive UI** — Optimized for desktop, tablet, and mobile  
+👉 **Performance Monitoring** — Sentry tracks errors and system health  
+👉 **Scalable Architecture** — Modular, reusable components and services
+
+---
+
+## 🖼️ Screenshots
+
+### 🧑‍⚕️ Admin Dashboard & Appointment Confirmation
+
+| Admin Dashboard | Appointment Confirmation |
+|----------------|---------------------------|
+| ![Admin Dashboard](public/screenshots/admin-dashboard.png) | ![Confirmation](public/screenshots/appointment-confirmation.png) |
+
+### 🏠 Home & Patient Identification
+
+| Home Page | Identification Verification |
+|---------|------------------------------|
+| ![Home](public/screenshots/home.png) | ![ID Verification](public/screenshots/identification-information.png) |
+
+### 📅 Booking New Appointment
+
+| New Appointment Form |
+|----------------------|
+| ![New Appointment](public/screenshots/new-appoitnment-form.png) |
+
+---
+
+## ⚙️ Environment Variables
+
+Create a file named `.env.local` in the root directory:
+
+```env
+# APPWRITE
+NEXT_PUBLIC_ENDPOINT=https://cloud.appwrite.io/v1
+PROJECT_ID=
+API_KEY=
+DATABASE_ID=
+PATIENT_COLLECTION_ID=
+APPOINTMENT_COLLECTION_ID=
+NEXT_PUBLIC_BUCKET_ID=
+
+# ADMIN ACCESS
+NEXT_PUBLIC_ADMIN_PASSKEY=111111
 ```
 
-Important notes:
-- `NEXT_PUBLIC_ENDPOINT` must be a valid Appwrite endpoint URL (e.g. `https://cloud.appwrite.io/v1`).
-- If you use a region endpoint, make sure it’s spelled correctly (e.g. **sanfrancisco**, not **sanfransico**), otherwise you’ll get DNS errors like `getaddrinfo ENOTFOUND`.
+🔐 **Never commit your `.env.local` file to version control.**
 
-First, run the development server:
+---
+
+## 🤸 Quick Start
+
+### ✅ Prerequisites
+
+Make sure you have:
+
+- Git
+- Node.js (18+ recommended)
+- npm
+
+---
+
+### 📦 Clone the Repository
+
+```bash
+git clone https://github.com/johnsonr84/healthcare-patient-management-system.git
+cd healthcare-patient-management-system
+```
+
+---
+
+### 📥 Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+### ▶️ Run the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open your browser and navigate to:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🧠 System Architecture
 
-To learn more about Next.js, take a look at the following resources:
+### 🔄 Patient Flow
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Patient registers and submits personal info  
+2. Uploads ID for verification  
+3. Requests appointment  
+4. Admin reviews and confirms  
+5. SMS confirmation sent via Twilio  
+6. Appointment appears in dashboard history
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🔐 Security & Compliance
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Secure Appwrite authentication
+- Role-based admin access
+- Secure file storage
+- Encrypted API communication
+- Consent & privacy acknowledgment built into flows
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> ⚠️ This project is for educational/demo purposes and not HIPAA compliant out of the box.
+
+---
+
+## 🧪 Monitoring & Reliability
+
+- Sentry tracks:
+  - API failures
+  - UI errors
+  - Performance bottlenecks
+
+---
+
+## 📌 Repo Topics (Suggested)
+
+```
+nextjs
+healthcare
+appointment-booking
+appwrite
+twilio
+patient-management
+admin-dashboard
+saas
+typescript
+tailwindcss
+```
+
+---
+
+## 📄 License
+
+MIT License — free to use for learning, demos, and portfolio projects.
+
+---
+
+## 👨‍💻 Author
+
+**Robert Johnson**  
+Full-Stack & AI Engineer  
+GitHub: https://github.com/johnsonr84
+
+---
+
